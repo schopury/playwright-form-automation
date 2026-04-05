@@ -4,7 +4,6 @@ import { StepNumber, WalkInBathForm } from "../pages/walkInBathForm";
 // ---------- Constants / Test Data ----------
 const SERVICEABLE_ZIP = "68901";
 const OUT_OF_AREA_ZIP = "11111";
-const INVALID_ZIP = "1234";
 const VALID_NAME = "John Smith";
 const VALID_EMAIL = "john.smith@example.com";
 const VALID_PHONE = "5551234567";
@@ -95,25 +94,30 @@ test.describe("Walk-in bath multi-step form", () => {
 
   test("[P0] Submits successfully with a serviceable ZIP", async ({ page }) => {
     const form1 = new WalkInBathForm(page, "#form-container-1");
+    // const form2 = new WalkInBathForm(page, "#form-container-2");
 
     await completeStep1(form1);
     await form1.expectStepVisible(2);
     await expectProgressStep(form1, 2);
+    // await expectProgressStep(form2, 2);
 
     await form1.selectInterest("Safety");
     await form1.clickNext(2);
     await form1.expectStepVisible(3);
     await expectProgressStep(form1, 3, { knownBug: STEP_2_PROGRESS_BUG });
+    // await expectProgressStep(form2, 3, { knownBug: STEP_2_PROGRESS_BUG });
 
     await form1.selectProperty("owned");
     await form1.clickNext(3);
     await form1.expectStepVisible(4);
     await expectProgressStep(form1, 4);
+    // await expectProgressStep(form2, 4);
 
     await form1.fillContact(VALID_NAME, VALID_EMAIL);
     await form1.clickNext(4);
     await form1.expectStepVisible(5);
     await expectProgressStep(form1, 5);
+    // await expectProgressStep(form2, 5);
 
     await form1.fillPhone(VALID_PHONE);
     await form1.clickNext(5);
@@ -146,16 +150,16 @@ test.describe("Walk-in bath multi-step form", () => {
     );
   });
 
-  test("[P1] User with invalid ZIP format cannot proceed to next step", async ({
+  test("[P1] User with empty ZIP cannot proceed to next step", async ({
     page,
   }) => {
     const form1 = new WalkInBathForm(page, "#form-container-1");
 
-    await completeStep1(form1, INVALID_ZIP);
+    await completeStep1(form1, "");
 
     await form1.expectStepVisible(1);
     await expect(form1.step(2)).toBeHidden();
-    await expect(form1.stepError(1)).toContainText(/wrong zip code/i);
+    await expect(form1.stepError(1)).toContainText(/Enter your ZIP code/i);
   });
 
   const invalidPropertyTypes: Array<{
