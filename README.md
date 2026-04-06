@@ -128,13 +128,14 @@ Below are all identified end-to-end user scenarios for comprehensive test covera
 34. If both forms are meant to stay synchronized, step progression is synchronized correctly
 35. Hidden steps are not interactable before they become active
 
-### Additional scenarios not prioritized for this task
+### Additional scenarios
 
-36. Network/API failure handling
-37. Retry/idempotency behavior
-38. Boundary ZIP values
-39. Paste/trimming behavior
-40. Cross-form race-condition checks
+36. Form usability on mobile viewport (fields visible, no overlap, CTA accessible)
+37. Multi-step navigation works correctly on small screens
+38. Network/API failure handling
+39. Retry/idempotency behavior
+40. Paste/trimming behavior
+41. Cross-form race-condition checks
 
 ## ⭐ Top Priority Scenarios for Automation
 
