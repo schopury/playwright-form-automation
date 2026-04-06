@@ -94,30 +94,30 @@ test.describe("Walk-in bath multi-step form", () => {
 
   test("[P0] Submits successfully with a serviceable ZIP", async ({ page }) => {
     const form1 = new WalkInBathForm(page, "#form-container-1");
-    // const form2 = new WalkInBathForm(page, "#form-container-2");
+    const form2 = new WalkInBathForm(page, "#form-container-2");
 
     await completeStep1(form1);
     await form1.expectStepVisible(2);
     await expectProgressStep(form1, 2);
-    // await expectProgressStep(form2, 2);
+    await expectProgressStep(form2, 2);
 
     await form1.selectInterest("Safety");
     await form1.clickNext(2);
     await form1.expectStepVisible(3);
     await expectProgressStep(form1, 3, { knownBug: STEP_2_PROGRESS_BUG });
-    // await expectProgressStep(form2, 3, { knownBug: STEP_2_PROGRESS_BUG });
+    await expectProgressStep(form2, 3, { knownBug: STEP_2_PROGRESS_BUG });
 
     await form1.selectProperty("owned");
     await form1.clickNext(3);
     await form1.expectStepVisible(4);
     await expectProgressStep(form1, 4);
-    // await expectProgressStep(form2, 4);
+    await expectProgressStep(form2, 4);
 
     await form1.fillContact(VALID_NAME, VALID_EMAIL);
     await form1.clickNext(4);
     await form1.expectStepVisible(5);
     await expectProgressStep(form1, 5);
-    // await expectProgressStep(form2, 5);
+    await expectProgressStep(form2, 5);
 
     await form1.fillPhone(VALID_PHONE);
     await form1.clickNext(5);

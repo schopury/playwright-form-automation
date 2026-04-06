@@ -89,42 +89,52 @@ Below are all identified end-to-end user scenarios for comprehensive test covera
 10. User selects “Owned House / Condo” → proceeds to next step
 11. User selects “Rental Property” → blocked with correct error message
 12. User selects “Mobile Home” → blocked with correct error message
-13. User clicks Next on step 3 without selecting property type → validation error, cannot proceed
+13. Only one property option can be selected at a time -> selecting a new option automatically deselects the previous selection.
+14. User clicks Next on step 3 without selecting property type → validation error, cannot proceed
 
 ### Step 4 validation scenarios
 
-14. User leaves Name empty → validation error, cannot proceed
-15. User leaves Email empty → native HTML5 validation blocks submission
-16. User enters invalid email format → native HTML5 validation blocks submission
-17. User enters valid name and valid email → proceeds to phone step
+15. User leaves Name empty → validation error, cannot proceed
+16. User leaves Email empty → native HTML5 validation blocks submission
+17. User enters invalid email format → native HTML5 validation blocks submission
+18. User enters only first/last name → validation error, cannot proceed
+19. User enters valid name and valid email → proceeds to phone step
 
 ### Step 5 validation scenarios
 
-18. User leaves Phone empty → validation error, cannot submit
-19. User enters fewer than 10 digits → validation error, cannot submit
-20. User enters more than 10 digits → validation error, cannot submit
-21. User enters non-digit characters in phone → validation error, cannot submit
-22. User enters exactly 10 digits → successful submission
+20. User leaves Phone empty → validation error, cannot submit
+21. User enters fewer than 10 digits → validation error, cannot submit
+22. User enters more than 10 digits → only first 10 digits are taken
+23. User enters non-digit characters in phone → input field remains empty
+24. User enters exactly 10 digits → successful submission
 
 ### End-state / navigation scenarios
 
-23. Successful submission redirects to Thank You page
-24. Failed validation on any step keeps user on current step
-25. Progress indicator updates correctly on each step
+25. Successful submission redirects to Thank You page
+26. Failed validation on any step keeps user on current step
+27. Progress indicator updates correctly on each step
 
-### Step 2 validation scenarios for out-of-area ZIP
+### Out-of-area ZIP flow scenarios
 
-26. User enters out-of-area ZIP and proceed to Sorry page with email submission oportunity
-27. User leaves Email empty → validation error, cannot submit
-28. User enters invalid email format → native HTML5 validation blocks submission
-29. User enters valid email and proceeds to Thank you page
+28. User enters out-of-area ZIP and proceed to Sorry page with email submission oportunity
+29. User leaves Email empty → validation error, cannot submit
+30. User enters invalid email format → native HTML5 validation blocks submission
+31. User enters valid email and sees Thank you message
 
 ### Multi-form / page consistency scenarios
 
-30. Form container 1 works correctly
-31. Form container 2 works correctly
-32. If both forms are meant to stay synchronized, step progression is synchronized correctly
-33. Hidden steps are not interactable before they become active
+32. Form container 1 works correctly
+33. Form container 2 works correctly
+34. If both forms are meant to stay synchronized, step progression is synchronized correctly
+35. Hidden steps are not interactable before they become active
+
+### Additional scenarios not prioritized for this task
+
+36. Network/API failure handling
+37. Retry/idempotency behavior
+38. Boundary ZIP values
+39. Paste/trimming behavior
+40. Cross-form race-condition checks
 
 ## ⭐ Top Priority Scenarios for Automation
 
@@ -204,7 +214,7 @@ The following scenarios were selected for automation based on **business impact*
 
 ---
 
-#### **6. Invalid Phone number Validation** (Scenario #19)
+#### **6. Invalid Phone number Validation** (Scenario #20)
 
 - **Priority:** P1 - High
 - **Business Impact:** 🟠 HIGH - Ensures lead contact quality for follow-up
@@ -247,16 +257,33 @@ Does not affect functionality
 
 Handling: test annotation about the issue
 
-### Defect #4: form 2 Bug
+### Defect #4: Form Context Switch After ZIP Submission
 
-### Defect #5: form 1 and 2 Inconsistency
+When a user enters a ZIP code in Form 2 and clicks Next, the application unexpectedly switches context to Form 1, and the user continues the flow there.
+
+### Defect #5: Out-of-area email field does not use native HTML5 validation
+
+In the out-of-area ZIP flow, the email input is rendered as type="text" instead of type="email", resulting in missing native HTML5 validation.
 
 ## 🚀 Future Improvements
 
-### 1. Separate Helpers to utils
+### 1. Extract Shared Helpers
+
+- Move reusable helper methods into a dedicated `utils/` module
+- Reduce duplication and improve readability as the test suite grows
 
 ### 2. Test Data Management with Fixtures
 
+- Use Playwright fixtures to centralize test data (ZIPs, emails, phone numbers)
+- Improve maintainability and consistency across tests
+
 ### 3. API Contract Testing
 
+- Validate request/response structure between frontend and backend
+- Ensure correct data is submitted (ZIP, email, phone)
+- Detect breaking API changes early
+
 ### 4. Visual Regression Testing
+
+- Add snapshot-based UI validation to detect layout regressions
+- Ensure consistent user experience across releases
