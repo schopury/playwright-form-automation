@@ -71,7 +71,7 @@ Below are all identified end-to-end user scenarios for comprehensive test covera
 
 ### Functional flow scenarios
 
-1. User completes full happy path with service-available ZIP and owned property → redirected to Thank You page
+1. User completes full happy path with service-available ZIP and owned property → redirected to Thank You page with successful request submission
 2. User enters out-of-area ZIP → routed to “sorry / notify me” flow
 3. User enters invalid ZIP with fewer than 5 digits → validation error, cannot proceed
 4. User enters invalid ZIP with more than 5 digits → validation error, cannot proceed
@@ -268,21 +268,21 @@ In the out-of-area ZIP flow, the email input is rendered as type="text" instead 
 
 ## 🚀 Future Improvements
 
-### 1. Extract Shared Helpers
-
-- Move reusable helper methods into a dedicated `utils/` module
-- Reduce duplication and improve readability as the test suite grows
-
-### 2. Test Data Management with Fixtures
-
-- Use Playwright fixtures to centralize test data (ZIPs, emails, phone numbers)
-- Improve maintainability and consistency across tests
-
-### 3. API Contract Testing
+### 1. API Contract Testing
 
 - Validate request/response structure between frontend and backend
 - Ensure correct data is submitted (ZIP, email, phone)
 - Detect breaking API changes early
+
+### 2. Extract Shared Helpers
+
+- Move reusable helper methods into a dedicated `utils/` module
+- Reduce duplication and improve readability as the test suite grows
+
+### 3. Test Data Management with Fixtures
+
+- Use Playwright fixtures to centralize test data (ZIPs, emails, phone numbers)
+- Improve maintainability and consistency across tests
 
 ### 4. Visual Regression Testing
 
